@@ -6,7 +6,7 @@ const myVideo = document.createElement('video');
 var peer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '443'
+    port: '3000'
 });
 
 
@@ -26,9 +26,7 @@ navigator.mediaDevices.getUserMedia({
         });
     });
 
-    socket.on('user-connected', (userId) => {
-        connectToNewUser(userId, stream);
-    });
+
 
     // input value
     let text = $("input");
@@ -42,9 +40,11 @@ navigator.mediaDevices.getUserMedia({
     socket.on("createMessage", message => {
         $(".messages").append(`<li class="message"><b>user</b><br/>${message}</li>`);
         scrollToBottom()
-    })
+    });
 
-
+    socket.on('user-connected', (userId) => {
+        connectToNewUser(userId, stream);
+    });
 })
 
 peer.on('open', id => {
@@ -75,7 +75,7 @@ const addVideoStream = (video, stream) => {
 const scrollToBottom = () => {
     let d = $('.main__chat_window');
     d.scrollTop(d.prop("scrollHeight"));
-}
+};
 
 const muteUnmute = () => {
     const enabled = myVideoStream.getAudioTracks()[0].enabled;
@@ -86,7 +86,7 @@ const muteUnmute = () => {
         setMuteButton();
         myVideoStream.getAudioTracks()[0].enabled = true;
     }
-}
+};
 
 const setMuteButton = () => {
     const html = `
@@ -94,7 +94,7 @@ const setMuteButton = () => {
       <span>Mute</span>
     `
     document.querySelector('.main__mute_button').innerHTML = html;
-}
+};
 
 const setUnmuteButton = () => {
     const html = `
@@ -102,7 +102,7 @@ const setUnmuteButton = () => {
       <span>Unmute</span>
     `
     document.querySelector('.main__mute_button').innerHTML = html;
-}
+};
 
 const playStop = () => {
 
@@ -114,7 +114,7 @@ const playStop = () => {
         setStopVideo()
         myVideoStream.getVideoTracks()[0].enabled = true;
     }
-}
+};
 
 const setStopVideo = () => {
     const html = `
@@ -122,7 +122,7 @@ const setStopVideo = () => {
       <span>Stop Video</span>
     `
     document.querySelector('.main__video_button').innerHTML = html;
-}
+};
 
 const setPlayVideo = () => {
     const html = `
@@ -130,4 +130,4 @@ const setPlayVideo = () => {
       <span>Play Video</span>
     `
     document.querySelector('.main__video_button').innerHTML = html;
-}
+};
